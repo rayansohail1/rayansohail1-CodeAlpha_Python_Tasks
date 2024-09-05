@@ -1,0 +1,38 @@
+class SimpleChatbot:
+    def __init__(self):
+        self.greetings = ["hi", "hello", "hey", "howdy"]
+        self.farewells = ["bye", "goodbye", "see you later", "take care"]
+        self.default_responses = [
+            "I'm sorry, I didn't understand that.",
+            "Could you please rephrase?",
+            "I'm not sure how to respond to that."
+        ]
+
+    def get_response(self, user_input):
+        user_input = user_input.lower()
+        
+        # Check for greetings
+        if any(greeting in user_input for greeting in self.greetings):
+            return "Hello! How can I assist you today?"
+
+        # Check for farewells
+        elif any(farewell in user_input for farewell in self.farewells):
+            return "Goodbye! Have a great day!"
+
+        # Default response
+        else:
+            return self.default_responses[0]
+
+    def chat(self):
+        print("Welcome to the chatbot! Type 'bye' to exit.")
+        while True:
+            user_input = input("You: ")
+            if any(farewell in user_input.lower() for farewell in self.farewells):
+                print("Chatbot:", self.get_response(user_input))
+                break
+            response = self.get_response(user_input)
+            print("Chatbot:", response)
+
+if __name__ == "__main__":
+    chatbot = SimpleChatbot()
+    chatbot.chat()
