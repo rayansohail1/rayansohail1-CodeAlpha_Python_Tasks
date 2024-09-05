@@ -1,0 +1,86 @@
+class Stock:
+    def __init__(self, symbol, quantity, price):
+        self.symbol = symbol
+        self.quantity = quantity
+        self.price = price  # Current price of the stock
+
+    def value(self):
+        return self.quantity * self.price
+
+    def update_price(self, new_price):
+        self.price = new_price
+
+
+class Portfolio:
+    def __init__(self):
+        self.stocks = {}
+
+    def add_stock(self, symbol, quantity, price):
+        if symbol in self.stocks:
+            self.stocks[symbol].quantity += quantity
+            self.stocks[symbol].update_price(price)
+        else:
+            self.stocks[symbol] = Stock(symbol, quantity, price)
+
+    def remove_stock(self, symbol, quantity):
+        if symbol in self.stocks:
+            if self.stocks[symbol].quantity <= quantity:
+                del self.stocks[symbol]
+            else:
+                self.stocks[symbol].quantity -= quantity
+        else:
+            print("Stock not found in portfolio.")
+
+    def total_value(self):
+        total = sum(stock.value() for stock in self.stocks.values())
+        return total
+
+    def display_portfolio(self):
+        if not self.stocks:
+            print("Your portfolio is empty.")
+            return
+        print("Your Portfolio:")
+        for stock in self.stocks.values():
+            print(f"{stock.symbol}: {stock.quantity} shares at ${stock.price:.2f} each, Total: ${stock.value():.2f}")
+        print(f"Total Portfolio Value: ${self.total_value():.2f}")
+
+
+def main():
+    portfolio = Portfolio()
+
+    while True:
+        print("\n1. Add stock to portfolio")
+        print("2. Remove stock from portfolio")
+        print("3. View portfolio value")
+        print("4. Display portfolio")
+        print("5. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            symbol = input("Enter stock symbol: ")
+            quantity = int(input("Enter quantity: "))
+            price = float(input("Enter current price: "))
+            portfolio.add_stock(symbol, quantity, price)
+
+        elif choice == '2':
+            symbol = input("Enter stock symbol: ")
+            quantity = int(input("Enter quantity to remove: "))
+            portfolio.remove_stock(symbol, quantity)
+
+        elif choice == '3':
+            value = portfolio.total_value()
+            print(f"Total portfolio value: ${value:.2f}")
+
+        elif choice == '4':
+            portfolio.display_portfolio()
+
+        elif choice == '5':
+            print("Exiting the program.")
+            break
+
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
